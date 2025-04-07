@@ -22,79 +22,70 @@ cryxie install json_mapper@0.0.1
 
 Here's a practical example of how to use the JsonMapper:
 
-```java
-import brasilean.json_mapper.App.JsonMapper;
+### Basic Model Class
 
-// Example 1: Basic JSON to Java object mapping
-String jsonString = """
-{
-    "name": "John Doe",
-    "age": 30,
-    "address": {
-        "street": "123 Main St",
-        "city": "New York"
+```java
+public class MyClass {
+    private String game;
+    private String movie;
+
+    // Getters and Setters
+    public String getGame() {
+        return game;
+    }
+
+    public void setGame(String game) {
+        this.game = game;
+    }
+
+    public String getMovie() {
+        return movie;
+    }
+
+    public void setMovie(String movie) {
+        this.movie = movie;
     }
 }
-""";
-
-JsonMapper mapper = new JsonMapper();
-Person person = mapper.fromJson(jsonString, Person.class);
-
-// Access the mapped data
-System.out.println(person.getName()); // Output: John Doe
-System.out.println(person.getAge()); // Output: 30
-System.out.println(person.getAddress().getStreet()); // Output: 123 Main St
-
-// Example 2: Java object to JSON
-User user = new User();
-user.setName("Jane Smith");
-user.setEmail("jane@example.com");
-
-Preferences preferences = new Preferences();
-preferences.setTheme("dark");
-preferences.setNotifications(true);
-user.setPreferences(preferences);
-
-String jsonOutput = mapper.toJson(user);
-System.out.println(jsonOutput);
 ```
 
-### Required Model Classes
+### Converting JSON to Java Object
+
+There are two ways to convert JSON to a Java object:
+
+1. Using Class reference:
 
 ```java
-// Person.java
-public class Person {
-    private String name;
-    private int age;
-    private Address address;
+String json = "{\"game\":\"yu-gi-oh\",\"movie\":\"batman\"}";
 
-    // Getters and setters
-}
+MyClass myObj = new JsonMapper<MyClass>()
+    .fromJsonToTargetClass(json, MyClass.class);
 
-// Address.java
-public class Address {
-    private String street;
-    private String city;
+System.out.println(myObj.getGame()); // Output: yu-gi-oh
+```
 
-    // Getters and setters
-}
+2. Using TypeReference:
 
-// User.java
-public class User {
-    private String name;
-    private String email;
-    private Preferences preferences;
+```java
+String json = "{\"game\":\"yu-gi-oh\",\"movie\":\"batman\"}";
 
-    // Getters and setters
-}
+MyClass myObj = new JsonMapper<MyClass>()
+    .fromJsonToTargetClass(json, new TypeReference<>() {});
 
-// Preferences.java
-public class Preferences {
-    private String theme;
-    private boolean notifications;
+System.out.println(myObj.getGame()); // Output: yu-gi-oh
+```
 
-    // Getters and setters
-}
+### Converting Java Object to JSON
+
+```java
+// Create and populate the object
+MyClass myObj = new MyClass();
+myObj.setGame("yu-gi-oh");
+myObj.setMovie("batman");
+
+// Convert to JSON
+String json = new JsonMapper<>(myObj).toJson();
+System.out.println(json);
+// Output: {"game":"yu-gi-oh","movie":"batman"}
 ```
 
 ## Features
