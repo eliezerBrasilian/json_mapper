@@ -20,6 +20,12 @@ cryxie install json_mapper@0.0.1
 
 ## Usage
 
+First, import the JsonMapper class:
+
+```java
+import brasilian.json_mapper.JsonMapper;
+```
+
 Here's a practical example of how to use the JsonMapper:
 
 ### Basic Model Class
